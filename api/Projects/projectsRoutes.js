@@ -83,8 +83,8 @@ const deleteProject =  async (req, res, next) => {
  *
   * */
 const addNewProject = (req, res, next) => {
-  if (req.body.userId === undefined || req.body.text === undefined) {
-    res.status(400).json({ errorMessage: "Please provide title and contents for the project." });
+  if (req.body.name === undefined || req.body.description === undefined) {
+    res.status(400).json({ errorMessage: "Please provide title and description for the project." });
     return;
   }
 
@@ -106,8 +106,8 @@ const addNewProject = (req, res, next) => {
  * Returns the modified document, NOT the original.
  *
   * */
-const updateProject = (req, res, next) => {
-  if (req.body.text === undefined) {
+const updateProject = (req, res) => {
+  if (req.params.id === undefined) {
     res.status(400).json({ errorMessage: "Please provide title and contents for the project." });
     return;
   }
@@ -131,7 +131,7 @@ const updateProject = (req, res, next) => {
 
 const getProjectActions = (req, res, next) => {
   const { id } = req.params;
-  actionsDB.getProjectActions(id)
+  projectDB.getProjectActions(id)
     .then(actions => {
       res.status(201).json(actions);
     })

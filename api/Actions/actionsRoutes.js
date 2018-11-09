@@ -24,14 +24,33 @@ const getAction = (req, res) => {
 }
 
 const addAction = (req, res) => {
-  process.stdout.write(req.body.name + '\n');
-  const { name } = req.body;
-  actionsDB.insert({ name })
-    .then(id => {
-      res.status(201).json(id);
+  if (req.body.project_id === undefined || req.body.description === undefined) {
+    res.status(400).json({ errorMessage: "Please provide title and description for the project." });
+    return;
+  }
+
+  const { project_id } = req.body;
+  actionsDB.get(project_id)
+    .then(project => {
+      let action = {
+        "project_id": "",
+        "description": "",
+        "notes": ""
+      }
+      console.log(action, req.body)
+      action = Object.assign(action, req.body);
+      console.log(action)
+
+      actionsDB.insert(action)
+        .then(id => {
+          res.status(201).json(id);
+        })
+        .catch(error => {
+          res.status(500).json({ message: `Internal server error. Could not add action`, error });
+        });
     })
     .catch(error => {
-      res.status(500).json({ message: `Internal server error. Could not add action`, error });
+      res.status(500).json({ message: `Internal server error. Could not find project`, error });
     });
 }
 
@@ -51,10 +70,11 @@ const deleteAction = (req, res) => {
 }
 
 const updateAction = (req, res) => {
-  if (req.body.name === undefined) {
-    res.status(400).json({ errorMessage: "Please provide a name for an action." });
-    return;
-  }
+  // if (req.body.project_id === undefined) {
+  //   res.status(400).json({ errorMessage: "Please provide a project_id for an action." });
+  //   return;
+  // }
+  console.log(req.body)
   actionsDB.update(req.params.id, req.body)
     .then(actionsUpdated => {
       if (actionsUpdated > 0) {
@@ -86,10 +106,5 @@ router.get('/:id', getAction);
 router.post('/', addAction);
 router.delete('/:id', deleteAction);
 router.put('/:id', updateAction);
-
-
-
-
-
 
 module.exports = router;
