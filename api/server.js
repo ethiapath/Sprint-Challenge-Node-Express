@@ -8,6 +8,6 @@ const server = express();
 // middleware
 configureMiddleware(server);
 
-// endpoint handlers
+server.use('/api', routes);
 
 module.exports = server;

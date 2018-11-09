@@ -1,11 +1,11 @@
 const express = require('express');
 
-const projectRoutes = require('./Projects/projectRoutes.js');
-const actionRoutes = require('./Actions/actionRoutes.js');
+const projectRoutes = require('./Projects/projectsRoutes.js');
+const actionRoutes = require('./Actions/actionsRoutes.js');
 
 const router = express.Router();
 
-server.use('/projects', projectRoutes)
-server.use('/actions', actionRoutes)
+router.use('/projects', projectRoutes)
+router.use('/actions', actionRoutes)
 
 module.exports = router;
