@@ -42,8 +42,8 @@ const addAction = (req, res) => {
       console.log(action)
 
       actionsDB.insert(action)
-        .then(id => {
-          res.status(201).json(id);
+        .then(action => {
+          res.status(201).json(action);
         })
         .catch(error => {
           res.status(500).json({ message: `Internal server error. Could not add action`, error });
