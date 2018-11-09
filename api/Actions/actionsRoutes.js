@@ -76,12 +76,8 @@ const updateAction = (req, res) => {
   // }
   console.log(req.body)
   actionsDB.update(req.params.id, req.body)
-    .then(actionsUpdated => {
-      if (actionsUpdated > 0) {
-        res.status(200).json({ message: `${actionsUpdated} actions updated`});
-      } else {
-        res.status(404).json({ message: 'error updating action', error})
-      } 
+    .then(action => {
+      res.status(200).json(action);
     })
     .catch(error => {
       res.status(500).json({ message: `Internal server error. Could not update action`, error });

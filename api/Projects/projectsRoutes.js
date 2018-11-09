@@ -112,17 +112,10 @@ const updateProject = (req, res) => {
     return;
   }
 
-  projectDB.update(req.params.id, req.body).then(count => {
-    if (count > 0) {
-      projectDB.get(req.params.id).then(project => {
-        console.log(project, project.hasOwnProperty('length'), project.length > 0)
-        res.status(200).json(project);
-      });
-    } else {
-      res.status(404).json({
-        message: `The project with the specified ID ${req.params.id} does not exist.`
-      })
-    }
+  projectDB.update(req.params.id, req.body)
+    .then(count => {
+      console.log(count)
+      res.status(200).json(count);
   })
   .catch(err => {
     res.status(500).json({ error: "The project information could not be modified." })
@@ -145,7 +138,7 @@ router.get('/', getAllProjects);
 router.get('/:id', getProjectById);
 router.post('/', addNewProject);
 router.delete('/:id', deleteProject);
-router.put(':id', updateProject);
+router.put('/:id', updateProject);
 
 router.get('/:id/actions', getProjectActions);
 
