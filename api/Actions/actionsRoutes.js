@@ -14,7 +14,7 @@ const getAllActions = (req, res) => {
 }
 
 const getAction = (req, res) => {
-  actinosDB.get(req.params.id)
+  actionsDB.get(req.params.id)
     .then(data => {
       res.status(200).json(data);
     })
@@ -70,12 +70,25 @@ const deleteAction = (req, res) => {
 }
 
 const updateAction = (req, res) => {
-  // if (req.body.project_id === undefined) {
-  //   res.status(400).json({ errorMessage: "Please provide a project_id for an action." });
-  //   return;
-  // }
-  console.log(req.body)
-  actionsDB.update(req.params.id, req.body)
+  if (req.body.project_id === undefined) {
+    res.status(400).json({ errorMessage: "Please provide a project_id for an action." });
+    return;
+  }
+
+  const {
+    project_id,
+    description,
+    notes,
+    completed
+  } = req.body;
+  // action = Object.assign(action, req.body);
+  // console.log(action, req.body)
+  actionsDB.update(req.params.id, {
+    project_id,
+    description,
+    notes,
+    completed
+  })
     .then(action => {
       res.status(200).json(action);
     })
